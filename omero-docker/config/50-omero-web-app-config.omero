@@ -1,0 +1,2 @@
+config append omero.web.apps '"parade_crossfilter"'
+config append omero.web.open_with '["Parade", "parade_crossfilter_index", {"supported_objects": ["project", "screen"]}]'

@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+
+  database:
+    container_name: omerodb
+    image: "postgres:11"
+    environment:
+      POSTGRES_USER: omero
+      POSTGRES_DB: omero
+      POSTGRES_PASSWORD: omero
+    networks:
+      - omero
+#    volumes:
+#      - "database:/var/lib/postgresql/data"
+
+  omeroserver:
+    # This container uses the tag for the latest server release of OMERO 5
+    # To upgrade to the next major release, increment the major version number
+    container_name: omeroserver
+    image: "openmicroscopy/omero-server:5"
+    environment:
+      CONFIG_omero_db_host: database
+      CONFIG_omero_db_user: omero
+      CONFIG_omero_db_pass: omero
+      CONFIG_omero_db_name: omero
+      ROOTPASS: omero
+    networks:
+      - omero
+    ports:
+      - "127.0.0.1:4063:4063"
+      - "127.0.0.1:4064:4064"
+    volumes:
+      - ./init:/opt/omero/init
+#      - "omero:/OMERO"
+
+  omeroweb:
+    # This container uses the tag for the latest web release of OMERO 5
+    # To upgrade to the next major release, increment the major version number
+    #image: "openmicroscopy/omero-web-standalone:5"
+    container_name: omeroweb
+    build: omero-web
+    volumes:
+      - ./config/50-omero-web-app-config.omero:/opt/omero/web/config/50-omero-web-app-config.omero
+    environment:
+      OMEROHOST: omeroserver
+    networks:
+      - omero
+    ports:
+      - "127.0.0.1:4080:4080"
+
+networks:
+  omero:
+
+#volumes:
+#  database:
+#  omero:
