@@ -4,7 +4,7 @@ set -eux
 OMERO_INIT=/opt/omero/init
 OMERO_DIST=${OMERO_DIST:-/opt/omero/server/OMERO.server}
 
-trap cleanup EXIT
+# trap cleanup EXIT
 
 export PATH=$PATH:${OMERO_DIST}/bin
 

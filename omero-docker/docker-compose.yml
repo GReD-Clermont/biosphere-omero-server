@@ -32,6 +32,7 @@ services:
       - "4064:4064"
     volumes:
       - ./init:/opt/omero/init
+    command: sh -c "chmod +x /opt/omero/init/populate.sh && sh /opt/omero/init/populate.sh"
 #      - "omero:/OMERO"
 
   omeroweb:
