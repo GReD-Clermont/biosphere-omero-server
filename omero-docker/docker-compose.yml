@@ -51,13 +51,11 @@ services:
   omeroweb:
     # This container uses the tag for the latest web release of OMERO 5
     # To upgrade to the next major release, increment the major version number
-    #image: "openmicroscopy/omero-web-standalone:5"
-    container_name: omeroweb
-    build: omero-web
-    volumes:
-      - ./config/50-omero-web-app-config.omero:/opt/omero/web/config/50-omero-web-app-config.omero
+    image: "openmicroscopy/omero-web-standalone:5"
     environment:
       OMEROHOST: omeroserver
+      CONFIG_omero_web__check_version: "false"
+      CONFIG_omero_web_secure: "true"
     networks:
       - omero
     ports:
@@ -65,6 +63,7 @@ services:
 
   nginx:
     image: library/nginx:1.14
+    container_name: nginx
     networks:
       - omero
     ports:
